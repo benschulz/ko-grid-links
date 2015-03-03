@@ -1,0 +1,1 @@
+A ko-grid extensions to turn entries in a column into links.
