@@ -1,7 +1,9 @@
 'use strict';
 
-define(['knockout', 'ko-grid'], function (ko, koGrid) {
-    koGrid.defineExtension(module.id, {
+define(['module', 'knockout', 'ko-grid'], function (module, ko, koGrid) {
+    var extensionId = module.id.indexOf('/') < 0 ? module.id : module.id.substring(0, module.id.indexOf('/'));
+
+    koGrid.defineExtension(extensionId, {
         Constructor: function LinksExtension(bindingValue, config, grid) {
             Object.keys(bindingValue).forEach(function (columnId) {
                 var column = grid.columns.byId(columnId);
@@ -31,5 +33,5 @@ define(['knockout', 'ko-grid'], function (ko, koGrid) {
         }
     });
 
-    return koGrid.declareExtensionAlias('links', module.id);
+    return koGrid.declareExtensionAlias('links', extensionId);
 });
