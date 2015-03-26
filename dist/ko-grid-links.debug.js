@@ -4,14 +4,15 @@
  */
 ;(function(factory) {
     if (typeof define === 'function' && define['amd'])
-        define(['ko-grid', 'ko-indexed-repeat', 'knockout'], factory);
+        define(['ko-grid', 'knockout', 'ko-data-source', 'ko-indexed-repeat'], factory);
     else
-        window['ko-grid-links'] = factory(window.ko.bindingHandlers['grid']);
-} (function(ko_grid, ko_indexed_repeat, knockout) {
+        window['ko-grid-links'] = factory(window.ko.bindingHandlers['grid'], window.ko);
+} (function(ko_grid, knockout) {
 var ko_grid_links_links, ko_grid_links;
 
-ko_grid_links_links = function (ko, koGrid) {
-  koGrid.defineExtension('ko-grid-links', {
+ko_grid_links_links = function (module, ko, koGrid) {
+  var extensionId = 'ko-grid-links'.indexOf('/') < 0 ? 'ko-grid-links' : 'ko-grid-links'.substring(0, 'ko-grid-links'.indexOf('/'));
+  koGrid.defineExtension(extensionId, {
     Constructor: function LinksExtension(bindingValue, config, grid) {
       Object.keys(bindingValue).forEach(function (columnId) {
         var column = grid.columns.byId(columnId);
@@ -39,8 +40,8 @@ ko_grid_links_links = function (ko, koGrid) {
       });
     }
   });
-  return koGrid.declareExtensionAlias('links', 'ko-grid-links');
-}(knockout, ko_grid);
+  return koGrid.declareExtensionAlias('links', extensionId);
+}({}, knockout, ko_grid);
 ko_grid_links = function (main) {
   return main;
 }(ko_grid_links_links);return ko_grid_links;

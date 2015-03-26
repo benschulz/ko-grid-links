@@ -1,12 +1,13 @@
-/**
+/*
  * Copyright (c) 2015, Ben Schulz
  * License: BSD 3-clause (http://opensource.org/licenses/BSD-3-Clause)
  */
-define(['onefold-dom', 'onefold-js', 'ko-grid', 'ko-indexed-repeat', 'knockout'],    function(onefold_dom, onefold_js, ko_grid, ko_indexed_repeat, knockout) {
+define(['onefold-dom', 'indexed-list', 'onefold-lists', 'onefold-js', 'ko-grid', 'ko-data-source', 'ko-indexed-repeat', 'knockout'],    function(onefold_dom, indexed_list, onefold_lists, onefold_js, ko_grid, ko_data_source, ko_indexed_repeat, knockout) {
 var ko_grid_links_links, ko_grid_links;
 
-ko_grid_links_links = function (ko, koGrid) {
-  koGrid.defineExtension('ko-grid-links', {
+ko_grid_links_links = function (module, ko, koGrid) {
+  var extensionId = 'ko-grid-links'.indexOf('/') < 0 ? 'ko-grid-links' : 'ko-grid-links'.substring(0, 'ko-grid-links'.indexOf('/'));
+  koGrid.defineExtension(extensionId, {
     Constructor: function LinksExtension(bindingValue, config, grid) {
       Object.keys(bindingValue).forEach(function (columnId) {
         var column = grid.columns.byId(columnId);
@@ -34,8 +35,8 @@ ko_grid_links_links = function (ko, koGrid) {
       });
     }
   });
-  return koGrid.declareExtensionAlias('links', 'ko-grid-links');
-}(knockout, ko_grid);
+  return koGrid.declareExtensionAlias('links', extensionId);
+}({}, knockout, ko_grid);
 ko_grid_links = function (main) {
   return main;
 }(ko_grid_links_links);return ko_grid_links;
